@@ -42,6 +42,11 @@ namespace Dotnet.Script.Tests
         {
             var output = await ReportWith("X", "Y");
             Assert.Contains("Version Y is now available", output.ToString());
+            if (ScriptEnvironment.Default.IsWindows)
+            {
+                Assert.Contains("Powershell  : (new-object Net.WebClient).DownloadString(\"https://raw.githubusercontent.com/dotnet-script/dotnet-script/master/install/install.ps1\") | iex", output);
+                Assert.DoesNotContain("/master/install.ps1", output);
+            }
         }
 
         [Fact]
